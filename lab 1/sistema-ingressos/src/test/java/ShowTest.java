@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.ingressos.enums.StatusFinanceiro;
 import com.ingressos.models.Lote;
+import com.ingressos.models.Relatorio;
 import com.ingressos.models.Show;
 
 class ShowTest {
@@ -14,7 +16,7 @@ class ShowTest {
 
     @BeforeEach
     void setUp() {
-        show = new Show("2024-11-16", "Linkin Park", 1000.0, 2000.0, false);
+        show = new Show("2024-11-16", "Linkin Park", 1000.0, 2000.0, true);
     }
 
     @Test
@@ -23,7 +25,7 @@ class ShowTest {
         assertEquals("Linkin Park", show.getArtista());
         assertEquals(1000.0, show.getCache());
         assertEquals(2000.0, show.getDespesasInfraestrutura());
-        assertEquals(false, show.isDataEspecial());
+        assertEquals(true, show.isDataEspecial());
     }
 
     @Test
@@ -92,7 +94,7 @@ class ShowTest {
 
     @Test
     void testAdicionarLote() {
-        Lote lote = new Lote(500, 0.2, 500.0, 0.15);
+        Lote lote = new Lote(500, 0.2, 10.00, 0.15);
         show.adicionarLote(lote);
 
         assertEquals(1, show.getLotes().size());
