@@ -39,7 +39,6 @@ class IngressoTest {
         assertEquals("O tipo do ingresso não pode ser nulo", exception.getMessage());
     }
 
-
     @Test
     void testSetVendido() {
         assertFalse(ingressoVip.isVendido());
@@ -62,7 +61,11 @@ class IngressoTest {
         assertEquals("O ingresso já foi vendido", exception.getMessage());
     }
 
-
-
+    @Test
+    void testNaoPermitirDisponibilizarIngressosJaDisponiveis() {
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                ingressoVip::disponibilizar);
+        assertEquals("O ingresso já está disponível", exception.getMessage());
+    }
 
 }
