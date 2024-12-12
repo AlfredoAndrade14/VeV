@@ -10,6 +10,9 @@ public class Ingresso {
     private boolean vendido;
 
     public Ingresso(TipoIngresso tipo) {
+        if (tipo == null) {
+            throw new NullPointerException("O tipo do ingresso não pode ser nulo");
+        }
         this.id = contadorId++;
         this.tipo = tipo;
         this.vendido = false;
