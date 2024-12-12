@@ -14,9 +14,9 @@ class IngressoTest {
 
     @BeforeEach
     void setUp() {
-        ingressoVip = new Ingresso(TipoIngresso.VIP);
-        ingressoNormal = new Ingresso(TipoIngresso.NORMAL);
-        ingressoMeiaEntrada = new Ingresso(TipoIngresso.MEIA_ENTRADA);
+        ingressoVip = new Ingresso(TipoIngresso.VIP, 200.00, 0.0);
+        ingressoNormal = new Ingresso(TipoIngresso.NORMAL, 100.00, 0.0);
+        ingressoMeiaEntrada = new Ingresso(TipoIngresso.MEIA_ENTRADA, 50.00, 0.0);
     }
 
     @Test
@@ -34,7 +34,7 @@ class IngressoTest {
     @Test
     void testCriarIngressoComTipoNulo() {
         Exception exception = assertThrows(NullPointerException.class, () -> {
-            new Ingresso(null);
+            new Ingresso(null, 200.00, 0.0);
         });
         assertEquals("O tipo do ingresso não pode ser nulo", exception.getMessage());
     }
