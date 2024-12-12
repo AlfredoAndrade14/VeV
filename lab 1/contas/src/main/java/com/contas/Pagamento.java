@@ -12,6 +12,13 @@ public class Pagamento {
     private Conta conta;
 
     public Pagamento(TipoPagamento tipo, Conta conta) {
+        if (tipo == null) {
+            throw new IllegalArgumentException("Tipo de pagamento não pode ser nulo.");
+        }
+        if (conta == null) {
+            throw new IllegalArgumentException("Conta não pode ser nula.");
+        }
+        
         this.tipo = tipo;
         this.conta = conta;
     }
