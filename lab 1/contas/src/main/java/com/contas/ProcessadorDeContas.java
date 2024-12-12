@@ -16,7 +16,7 @@ public class ProcessadorDeContas {
         if (contas.size() != tipos.size()) {
             throw new IllegalArgumentException("A lista de contas e a lista de tipos devem ter o mesmo tamanho.");
         }
-        
+
         for (int i = 0; i < contas.size(); i++) {
             TipoPagamento tipo;
             switch (tipos.get(i)) {
@@ -30,7 +30,7 @@ public class ProcessadorDeContas {
                     tipo = Pagamento.TipoPagamento.TRANSFERENCIA_BANCARIA;
                     break;
                 default:
-                    tipo = Pagamento.TipoPagamento.TRANSFERENCIA_BANCARIA;
+                    throw new IllegalArgumentException("Tipo de pagamento inválido: " + tipos.get(i));
             }
 
             pagamentos.add(new Pagamento(tipo, contas.get(i)));
