@@ -80,4 +80,37 @@ public class ProcessadorDeContasTest {
 
         assertEquals("Tipo de pagamento inválido: invalido", exception.getMessage());
     }
+
+    @Test
+    public void testProcessPagamentosComBoletoAtrasado() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 500.00);
+        Conta conta = new Conta("001", sdf.parse("21/02/2023"), 500.00, fatura);
+        
+        List<Conta> contas = new ArrayList<>();
+        contas.add(conta);
+        List<String> tipos = new ArrayList<>();
+        tipos.add("boleto");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+        processador.processar(contas, tipos);
+
+        assertEquals(1, processador.getPagamentos().size());
+        assertEquals(550.00, processador.getPagamentos().get(0).getConta().getValorPago(), 0.01); // Acrescido 10%.
+    }
+
+    @Test
+    public void testProcessPagamentosComBoletoValorInvalido() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 500.00);
+        Conta conta = new Conta("001", sdf.parse("19/02/2023"), 0.00, fatura);
+        List<Conta> contas = List.of(conta);
+        List<String> tipos = List.of("boleto");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            processador.processar(contas, tipos);
+        });
+
+        assertEquals("Pagamentos por boleto devem estar entre R$ 0,01 e R$ 5.000,00.", exception.getMessage());
+    }
 }
