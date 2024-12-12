@@ -7,14 +7,18 @@ public class Ingresso {
     private static int contadorId = 1;
     private final int id;
     private final TipoIngresso tipo;
+    private final double preco;
+    private final double desconto;
     private boolean vendido;
 
-    public Ingresso(TipoIngresso tipo) {
+    public Ingresso(TipoIngresso tipo, Double preco, Double desconto) {
         if (tipo == null) {
             throw new NullPointerException("O tipo do ingresso não pode ser nulo");
         }
         this.id = contadorId++;
         this.tipo = tipo;
+        this.preco = preco;
+        this.desconto = desconto;
         this.vendido = false;
     }
 
