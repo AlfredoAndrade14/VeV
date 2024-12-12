@@ -29,4 +29,8 @@ public class Ingresso {
     public boolean isVendido() {
         return vendido;
     }
+
+    public void vender() {
+        vendido = true;
+    }
 }
