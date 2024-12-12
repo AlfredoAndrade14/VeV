@@ -104,4 +104,17 @@ class LoteTest {
         assertEquals("Desconto deve estar entre 0% e 25%", exception.getMessage());
     }
 
+    @Test
+    void testCriacaoLoteComDescontoValido() {
+        Lote lote = new Lote(2, 0.3, 100.0, 0.15);
+        for (Ingresso ingresso : lote.getIngressos()) {
+            if (ingresso.getTipo() == TipoIngresso.VIP || ingresso.getTipo() == TipoIngresso.NORMAL) {
+                double precoEsperado = ingresso.getTipo() == TipoIngresso.VIP ? 200.0 * 0.85 : 100.0 * 0.85;
+                assertEquals(precoEsperado, ingresso.getPrecoFinal());
+            } else {
+                assertEquals(50.0, ingresso.getPrecoFinal());
+            }
+        }
+    }
+
 }
