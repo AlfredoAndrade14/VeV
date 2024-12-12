@@ -13,7 +13,7 @@ public class ProcessadorDeContasTest {
     @Test
     public void TestCreateEntities() throws ParseException {
         Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 1500.00);
-        Conta conta = new Conta("001", sdf.parse("20/02/2023"), 500.00);
+        Conta conta = new Conta("001", sdf.parse("20/02/2023"), 500.00, fatura);
 
         assertEquals("Cliente A", fatura.getCliente());
         assertEquals(sdf.parse("20/02/2023"), fatura.getData());
@@ -22,5 +22,6 @@ public class ProcessadorDeContasTest {
         assertEquals("001", conta.getCodigo());
         assertEquals(sdf.parse("20/02/2023"), conta.getData());
         assertEquals(500.00, conta.getValorPago(), 0.01);
+        assertEquals(conta.geFatura(), fatura);
     }
 }
