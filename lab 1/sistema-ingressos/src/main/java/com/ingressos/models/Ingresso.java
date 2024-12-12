@@ -33,4 +33,8 @@ public class Ingresso {
     public void vender() {
         vendido = true;
     }
+
+    public void disponibilizar() {
+        vendido = false;
+    }
 }
