@@ -98,4 +98,14 @@ class ShowTest {
         assertEquals(1, show.getLotes().size());
         assertTrue(show.getLotes().contains(lote));
     }
+
+    @Test
+    void testGerarRelatorio() {
+        Relatorio relatorio = show.gerarRelatorio();
+        assertEquals(0, relatorio.getIngressosVipVendidos());
+        assertEquals(0, relatorio.getIngressosMeiaVendidos());
+        assertEquals(0, relatorio.getIngressosNormaisVendidos());
+        assertEquals(-3300, relatorio.getReceitaLiquida());
+        assertEquals(StatusFinanceiro.PREJUÍZO, relatorio.getStatusFinanceiro());
+    }
 }
