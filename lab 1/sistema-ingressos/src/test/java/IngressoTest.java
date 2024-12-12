@@ -55,6 +55,13 @@ class IngressoTest {
         assertFalse(ingressoVip.isVendido());
     }
 
+    @Test
+    void testNaoPermitirVenderIngressosJaVendidos() {
+        ingressoNormal.vender();
+        IllegalStateException exception = assertThrows(IllegalStateException.class, ingressoNormal::vender);
+        assertEquals("O ingresso já foi vendido", exception.getMessage());
+    }
+
 
 
 
