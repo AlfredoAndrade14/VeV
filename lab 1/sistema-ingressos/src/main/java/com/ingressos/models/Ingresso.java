@@ -39,6 +39,10 @@ public class Ingresso {
     }
 
     public void disponibilizar() {
-        vendido = false;
+        if (vendido) {
+            this.vendido = false;
+        } else {
+            throw new IllegalStateException("O ingresso já está disponível");
+        }
     }
 }
