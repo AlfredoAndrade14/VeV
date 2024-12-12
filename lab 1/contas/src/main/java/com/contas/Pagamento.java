@@ -1,6 +1,7 @@
 package com.contas;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Pagamento {
     public enum TipoPagamento {
@@ -29,5 +30,14 @@ public class Pagamento {
 
     public Conta getConta() {
         return conta;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pagamento pagamento = (Pagamento) o;
+        if (this.conta == pagamento.conta && this.tipo == pagamento.tipo) return true;
+        return false;
     }
 }
