@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.ingressos.enums.TipoIngresso;
+import com.ingressos.models.Ingresso;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class IngressoTest {
