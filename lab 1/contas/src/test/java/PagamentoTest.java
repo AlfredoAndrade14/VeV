@@ -14,7 +14,7 @@ public class PagamentoTest {
     public void TestCreateConta() throws ParseException {
         Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 1500.00);
         Conta conta = new Conta("001", sdf.parse("20/02/2023"), 500.00, fatura);
-        Pagamento pagamento = new Pagamento(500.00, sdf.parse("20/02/2023"), Pagamento.TipoPagamento.BOLETO, conta);
+        Pagamento pagamento = new Pagamento(Pagamento.TipoPagamento.BOLETO, conta);
 
         assertEquals(500.00, pagamento.getValor());
         assertEquals(sdf.parse("20/02/2023"), pagamento.getData());

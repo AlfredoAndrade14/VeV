@@ -7,24 +7,20 @@ public class Pagamento {
         BOLETO, CARTAO_CREDITO, TRANSFERENCIA_BANCARIA
     }
 
-    private double valor;
-    private Date data;
     private TipoPagamento tipo;
     private Conta conta;
 
-    public Pagamento(double valor, Date data, TipoPagamento tipo, Conta conta) {
-        this.valor = valor;
-        this.data = data;
+    public Pagamento(TipoPagamento tipo, Conta conta) {
         this.tipo = tipo;
         this.conta = conta;
     }
 
     public double getValor() {
-        return valor;
+        return conta.getValorPago();
     }
 
     public Date getData() {
-        return data;
+        return conta.getData();
     }
 
     public TipoPagamento getTipo() {
