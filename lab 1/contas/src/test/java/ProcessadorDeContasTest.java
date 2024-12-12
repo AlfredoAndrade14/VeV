@@ -61,4 +61,23 @@ public class ProcessadorDeContasTest {
 
         assertEquals(0, processador.getPagamentos().size());
     }
+
+    @Test
+    public void testProcessPagamentosWithInvalidTipo() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 500.00);
+        Conta conta = new Conta("001", sdf.parse("20/02/2023"), 500.00, fatura);
+
+        List<Conta> contas = new ArrayList<>();
+        contas.add(conta);
+        List<String> tipos = new ArrayList<>();
+        tipos.add("invalido");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            processador.processar(contas, tipos);
+        });
+
+        assertEquals("Tipo de pagamento inválido: invalido", exception.getMessage());
+    }
 }
