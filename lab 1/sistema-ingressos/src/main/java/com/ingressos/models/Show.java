@@ -34,6 +34,10 @@ public class Show {
         this.lotes = new ArrayList<>();
     }
 
+    public void adicionarLote(Lote lote) {
+        this.lotes.add(lote);
+    }
+
     public String getData() {
         return data;
     }
