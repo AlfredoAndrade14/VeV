@@ -1,9 +1,11 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.ingressos.models.Lote;
 import com.ingressos.models.Show;
 
 class ShowTest {
@@ -88,4 +90,12 @@ class ShowTest {
         assertEquals("As despesas de infraestrutura não podem ser nulas ou negativas", exception.getMessage());
     }
 
+    @Test
+    void testAdicionarLote() {
+        Lote lote = new Lote(500, 0.2, 500.0, 0.15);
+        show.adicionarLote(lote);
+
+        assertEquals(1, show.getLotes().size());
+        assertTrue(show.getLotes().contains(lote));
+    }
 }
