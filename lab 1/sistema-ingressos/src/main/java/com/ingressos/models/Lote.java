@@ -33,13 +33,13 @@ public class Lote {
         int qtdeNormal = quantidade - qtdeVip - qtdeMeia;
 
         for (int i = 0; i < qtdeVip; i++) {
-            ingressos.add(new Ingresso(TipoIngresso.VIP));
+            ingressos.add(new Ingresso(TipoIngresso.VIP, precoNormal * 2, desconto));
         }
         for (int i = 0; i < qtdeMeia; i++) {
-            ingressos.add(new Ingresso(TipoIngresso.MEIA_ENTRADA));
+            ingressos.add(new Ingresso(TipoIngresso.MEIA_ENTRADA, precoNormal / 2, 0.0));
         }
         for (int i = 0; i < qtdeNormal; i++) {
-            ingressos.add(new Ingresso(TipoIngresso.NORMAL));
+            ingressos.add(new Ingresso(TipoIngresso.NORMAL, precoNormal, desconto));
         }
     }
 
