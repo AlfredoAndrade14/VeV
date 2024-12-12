@@ -47,5 +47,15 @@ class IngressoTest {
         assertTrue(ingressoVip.isVendido());
     }
 
+    @Test
+    void testDisponibilizar() {
+        ingressoMeiaEntrada.vender();
+        assertTrue(ingressoMeiaEntrada.isVendido());
+        ingressoMeiaEntrada.disponibilizar();
+        assertFalse(ingressoVip.isVendido());
+    }
+
+
+
 
 }
