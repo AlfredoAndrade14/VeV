@@ -39,4 +39,13 @@ class IngressoTest {
         assertEquals("O tipo do ingresso não pode ser nulo", exception.getMessage());
     }
 
+
+    @Test
+    void testSetVendido() {
+        assertFalse(ingressoVip.isVendido());
+        ingressoVip.vender();
+        assertTrue(ingressoVip.isVendido());
+    }
+
+
 }
