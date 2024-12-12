@@ -31,4 +31,12 @@ class IngressoTest {
         assertFalse(ingressoMeiaEntrada.isVendido());
     }
 
+    @Test
+    void testCriarIngressoComTipoNulo() {
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            new Ingresso(null);
+        });
+        assertEquals("O tipo do ingresso não pode ser nulo", exception.getMessage());
+    }
+
 }
