@@ -39,6 +39,10 @@ public class ProcessadorDeContas {
                     tipo = Pagamento.TipoPagamento.BOLETO;
                     break; 
                 case "cartão":
+                    long diasDeDiferenca = (contas.get(i).getFatura().getData().getTime() - contas.get(i).getData().getTime()) / (1000 * 60 * 60 * 24);
+                    if (diasDeDiferenca < 15) {
+                        throw new IllegalArgumentException("Pagamentos por cartão de crédito só podem ser incluídos se a data da conta for pelo menos 15 dias anteriores à data da fatura.");
+                    }
                     tipo = Pagamento.TipoPagamento.CARTAO_CREDITO;
                     break;
                 case "tranferencia":
