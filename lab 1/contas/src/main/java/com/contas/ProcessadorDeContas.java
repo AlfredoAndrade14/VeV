@@ -21,6 +21,21 @@ public class ProcessadorDeContas {
             TipoPagamento tipo;
             switch (tipos.get(i)) {
                 case "boleto":
+                    if (contas.get(i).getValorPago() < 0.01 || contas.get(i).getValorPago() > 5000.00) {
+                        throw new IllegalArgumentException("Pagamentos por boleto devem estar entre R$ 0,01 e R$ 5.000,00.");
+                    }
+        
+                    if (contas.get(i).getData().after(contas.get(i).getFatura().getData())) {
+                        double valorAcrescido = contas.get(i).getValorPago() * 1.10;
+                        Conta contaAtualizada = new Conta(
+                            contas.get(i).getCodigo(),
+                            contas.get(i).getData(),
+                            valorAcrescido,
+                            contas.get(i).getFatura()
+                        );
+                    
+                        contas.set(i, contaAtualizada);
+                    }
                     tipo = Pagamento.TipoPagamento.BOLETO;
                     break; 
                 case "cartão":
