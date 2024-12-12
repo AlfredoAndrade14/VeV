@@ -13,6 +13,10 @@ public class ProcessadorDeContas {
     }
 
     public void processar(List<Conta> contas, List<String> tipos) {
+        if (contas.size() != tipos.size()) {
+            throw new IllegalArgumentException("A lista de contas e a lista de tipos devem ter o mesmo tamanho.");
+        }
+        
         for (int i = 0; i < contas.size(); i++) {
             TipoPagamento tipo;
             switch (tipos.get(i)) {
