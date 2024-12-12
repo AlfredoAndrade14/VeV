@@ -25,7 +25,7 @@ public class Show {
         if (despesasInfraestrutura == null || despesasInfraestrutura < 0) {
             throw new IllegalArgumentException("As despesas de infraestrutura não podem ser nulas ou negativas");
         }
-        
+
         this.data = data;
         this.artista = artista;
         this.cache = cache;
@@ -36,6 +36,10 @@ public class Show {
 
     public void adicionarLote(Lote lote) {
         this.lotes.add(lote);
+    }
+
+    public Relatorio gerarRelatorio() {
+        return new Relatorio(this);
     }
 
     public String getData() {
@@ -62,5 +66,4 @@ public class Show {
         return lotes;
     }
 
-    
 }
