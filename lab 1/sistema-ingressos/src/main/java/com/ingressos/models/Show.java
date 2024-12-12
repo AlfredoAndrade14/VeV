@@ -13,6 +13,19 @@ public class Show {
     private List<Lote> lotes;
 
     public Show(String data, String artista, Double cache, Double despesasInfraestrutura, boolean dataEspecial) {
+        if (data == null || data.trim().isEmpty()) {
+            throw new IllegalArgumentException("A data do show não pode ser nula ou vazia");
+        }
+        if (artista == null || artista.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do artista não pode ser nulo ou vazio");
+        }
+        if (cache == null || cache <= 0) {
+            throw new IllegalArgumentException("O cache deve ser um valor positivo");
+        }
+        if (despesasInfraestrutura == null || despesasInfraestrutura < 0) {
+            throw new IllegalArgumentException("As despesas de infraestrutura não podem ser nulas ou negativas");
+        }
+        
         this.data = data;
         this.artista = artista;
         this.cache = cache;
