@@ -27,7 +27,7 @@ public class Conta {
         return valorPago;
     }
 
-    public Fatura geFatura() {
+    public Fatura getFatura() {
         return fatura;
     }
 }
