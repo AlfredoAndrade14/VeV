@@ -49,4 +49,8 @@ public class Ingresso {
             throw new IllegalStateException("O ingresso já está disponível");
         }
     }
+
+    public double getPrecoFinal() {
+        return preco * (1 - desconto);
+    }
 }
