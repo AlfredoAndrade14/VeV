@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -29,6 +30,78 @@ class LoteTest {
         assertEquals(20, vipCount);
         assertEquals(10, meiaCount);
         assertEquals(70, normalCount);
+    }
+
+    @Test
+    void testCriarLoteComQuantidadeNula() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Lote(null, 0.2, 50.0, 0.1);
+        });
+        assertEquals("A quantidade de ingressos deve ser um número positivo", exception.getMessage());
+    }
+
+    @Test
+    void testCriarLoteComPercentualVipNulo() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Lote(100, null, 50.0, 0.1);
+        });
+        assertEquals("O percentual de ingressos VIP deve estar entre 20% e 30%", exception.getMessage());
+    }
+
+    @Test
+    void testCriarLoteComPrecoNormalNulo() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Lote(100, 0.2, null, 0.1);
+        });
+        assertEquals("O preço normal deve ser um número positivo", exception.getMessage());
+    }
+
+    @Test
+    void testCriarLoteComDescontoNulo() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Lote(100, 0.2, 50.0, null);
+        });
+        assertEquals("Desconto deve estar entre 0% e 25%", exception.getMessage());
+    }
+
+    @Test
+    void testCriarLoteComQuantidadeNegativa() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Lote(-10, 0.2, 50.0, 0.1);
+        });
+        assertEquals("A quantidade de ingressos deve ser um número positivo", exception.getMessage());
+    }
+
+    @Test
+    void testCriarLoteComPercentualVipForaDoIntervalo() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Lote(100, 0.35, 50.0, 0.1);
+        });
+        assertEquals("O percentual de ingressos VIP deve estar entre 20% e 30%", exception.getMessage());
+    }
+
+    @Test
+    void testCriarLoteComPrecoNormalZero() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Lote(100, 0.2, 0.0, 0.1);
+        });
+        assertEquals("O preço normal deve ser um número positivo", exception.getMessage());
+    }
+
+    @Test
+    void testCriarLoteComDescontoNegativo() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Lote(100, 0.2, 50.0, -0.1);
+        });
+        assertEquals("Desconto deve estar entre 0% e 25%", exception.getMessage());
+    }
+
+    @Test
+    void testCriarLoteComDescontoAcimaDe25() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Lote(100, 0.2, 50.0, 0.3);
+        });
+        assertEquals("Desconto deve estar entre 0% e 25%", exception.getMessage());
     }
 
 }
