@@ -85,7 +85,7 @@ public class ProcessadorDeContasTest {
     public void testProcessPagamentosComBoletoAtrasado() throws ParseException {
         Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 500.00);
         Conta conta = new Conta("001", sdf.parse("21/02/2023"), 500.00, fatura);
-        
+
         List<Conta> contas = new ArrayList<>();
         contas.add(conta);
         List<String> tipos = new ArrayList<>();
@@ -113,4 +113,35 @@ public class ProcessadorDeContasTest {
 
         assertEquals("Pagamentos por boleto devem estar entre R$ 0,01 e R$ 5.000,00.", exception.getMessage());
     }
+
+    @Test
+    public void testProcessPagamentosComCartaoCreditoValido() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 500.00);
+        Conta conta = new Conta("001", sdf.parse("05/02/2023"), 500.00, fatura);  // 15 dias de antecedência
+        List<Conta> contas = List.of(conta);
+        List<String> tipos = List.of("cartão");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+        processador.processar(contas, tipos);
+
+        assertEquals(1, processador.getPagamentos().size());
+        assertEquals(Pagamento.TipoPagamento.CARTAO_CREDITO, processador.getPagamentos().get(0).getTipo());
+    }
+
+    @Test
+    public void testProcessPagamentosComCartaoCreditoDataInvalida() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 500.00);
+        Conta conta = new Conta("001", sdf.parse("15/02/2023"), 500.00, fatura);  // Menos de 15 dias
+        List<Conta> contas = List.of(conta);
+        List<String> tipos = List.of("cartão");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            processador.processar(contas, tipos);
+        });
+
+        assertEquals("Pagamentos por cartão de crédito só podem ser incluídos se a data da conta for pelo menos 15 dias anteriores à data da fatura.", exception.getMessage());
+    }
+
 }
