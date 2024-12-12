@@ -9,6 +9,16 @@ public class Fatura {
     private boolean paga;
 
     public Fatura(String cliente, Date data, double valor) {
+        if (cliente == null || cliente.trim().isEmpty()) {
+            throw new IllegalArgumentException("Cliente não pode ser nulo ou vazio.");
+        }
+        if (data == null) {
+            throw new IllegalArgumentException("Data não pode ser nula.");
+        }
+        if (valor <= 0) {
+            throw new IllegalArgumentException("Valor deve ser positivo.");
+        }
+        
         this.cliente = cliente;
         this.data = data;
         this.valor = valor;
