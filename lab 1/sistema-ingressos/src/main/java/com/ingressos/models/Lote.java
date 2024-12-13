@@ -51,4 +51,29 @@ public class Lote {
         return ingressos;
     }
 
+    public int venderIngressos(TipoIngresso tipo, int quantidade) {
+        if (tipo == null) {
+            throw new IllegalArgumentException("Tipo de ingresso inválido");
+        }
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("A quantidade solicitada deve ser maior que zero");
+        }
+
+        long ingressosDisponiveis = ingressos.stream().filter(i -> i.getTipo() == tipo).count();
+
+        if (quantidade > ingressosDisponiveis) {
+            throw new IllegalArgumentException("Não há ingressos suficientes do tipo " + tipo + " para vender");
+        }
+
+        List<Ingresso> ingressosParaRemover = new ArrayList<>();
+        for (Ingresso ingresso : ingressos) {
+            if (ingresso.getTipo() == tipo && ingressosParaRemover.size() < quantidade) {
+                ingressosParaRemover.add(ingresso);
+            }
+        }
+        ingressos.removeAll(ingressosParaRemover);
+
+        return quantidade;
+    }
+
 }
