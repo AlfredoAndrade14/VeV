@@ -84,7 +84,7 @@ public class Relatorio {
     @Override
     public String toString() {
         return String.format(
-                "Relatório do Show\nData: %s\nArtista: %s\nIngressos VIP vendidos: %d\nIngressos Meia vendidos: %d\nIngressos Normais vendidos: %d\nReceita líquida: %.2f\nStatus financeiro: %s",
+                "Relatório do Show\nData: %s\nArtista: %s\nIngressos VIP vendidos: %d\nIngressos Meia vendidos: %d\nIngressos Normais vendidos: %d\nReceita líquida: R$ %.2f\nStatus financeiro: %s",
                 data, artista, ingressosVipVendidos, ingressosMeiaVendidos, ingressosNormaisVendidos, receitaLiquida,
                 statusFinanceiro);
     }
