@@ -167,4 +167,32 @@ class ShowTest {
                 "Receita líquida: R$ 727250,00\n" +
                 "Status financeiro: LUCRO", relatorio.toString());
     }
+
+    @Test
+    void testGerarRelatorioPrejuizo() {
+        Show show = new Show("2024-11-15", "Coldplay", 15000.0, 20000.0, false);
+        Lote lote1 = new Lote(300, 0.3, 50.00, 0.25);
+
+        show.adicionarLote(lote1);
+
+        for (int i = 0; i < 100; i++) {
+            lote1.getIngressos().get(i).vender();
+        }
+
+        Relatorio relatorio = show.gerarRelatorio();
+
+        assertEquals(100, relatorio.getIngressosVipVendidos() + relatorio.getIngressosMeiaVendidos()
+                + relatorio.getIngressosNormaisVendidos());
+        assertTrue(relatorio.getReceitaLiquida() < 0);
+        assertEquals(StatusFinanceiro.PREJUÍZO, relatorio.getStatusFinanceiro());
+        assertEquals("Relatório do Show\n" +
+                "Data: 2024-11-15\n" +
+                "Artista: Coldplay\n" +
+                "Ingressos VIP vendidos: 90\n" +
+                "Ingressos Meia vendidos: 10\n" +
+                "Ingressos Normais vendidos: 0\n" +
+                "Receita líquida: R$ -28000,00\n" +
+                "Status financeiro: PREJUÍZO", relatorio.toString());
+    }
+
 }
