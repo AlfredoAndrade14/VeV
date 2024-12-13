@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.ingressos.enums.StatusFinanceiro;
+import com.ingressos.models.Ingresso;
 import com.ingressos.models.Lote;
 import com.ingressos.models.Relatorio;
 import com.ingressos.models.Show;
@@ -109,5 +110,61 @@ class ShowTest {
         assertEquals(0, relatorio.getIngressosNormaisVendidos());
         assertEquals(-3300, relatorio.getReceitaLiquida());
         assertEquals(StatusFinanceiro.PREJUÍZO, relatorio.getStatusFinanceiro());
+    }
+
+    @Test
+    void testGerarRelatorioComIngressosVendidos() {
+        Show show1 = new Show("2024-12-01", "Linkin Park", 8000.0, 4000.0, false);
+        Lote lote1 = new Lote(500, 0.3, 100.00, 0.2);
+        show1.adicionarLote(lote1);
+
+        for (Ingresso ingresso : lote1.getIngressos()) {
+            ingresso.vender();
+        }
+
+        Relatorio relatorio = show1.gerarRelatorio();
+
+        assertTrue(relatorio.getReceitaLiquida() > 0);
+        assertEquals(StatusFinanceiro.LUCRO, relatorio.getStatusFinanceiro());
+        assertEquals("Relatório do Show\n" +
+                "Data: 2024-12-01\n" +
+                "Artista: Linkin Park\n" +
+                "Ingressos VIP vendidos: 150\n" +
+                "Ingressos Meia vendidos: 50\n" +
+                "Ingressos Normais vendidos: 300\n" +
+                "Receita líquida: R$ 38500,00\n" +
+                "Status financeiro: LUCRO", relatorio.toString());
+    }
+
+    @Test
+    void testRelatorioComLotesMultiplos() {
+        Show show = new Show("2024-12-31", "Linkin Park", 70000.0, 30000.0, false);
+        Lote lote1 = new Lote(1000, 0.3, 600.00, 0.2);
+        Lote lote2 = new Lote(500, 0.2, 750.00, 0.1);
+
+        for (Ingresso ingresso : lote1.getIngressos()) {
+            ingresso.vender();
+        }
+
+        for (int i = 0; i < 250; i++) {
+            lote2.getIngressos().get(i).vender();
+        }
+
+        show.adicionarLote(lote1);
+        show.adicionarLote(lote2);
+
+        Relatorio relatorio = show.gerarRelatorio();
+
+        assertEquals(1250,
+                relatorio.getIngressosVipVendidos() + relatorio.getIngressosMeiaVendidos()
+                        + relatorio.getIngressosNormaisVendidos());
+        assertEquals("Relatório do Show\n" +
+                "Data: 2024-12-31\n" +
+                "Artista: Linkin Park\n" +
+                "Ingressos VIP vendidos: 400\n" +
+                "Ingressos Meia vendidos: 150\n" +
+                "Ingressos Normais vendidos: 700\n" +
+                "Receita líquida: R$ 727250,00\n" +
+                "Status financeiro: LUCRO", relatorio.toString());
     }
 }
