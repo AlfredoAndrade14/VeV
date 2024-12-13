@@ -117,4 +117,43 @@ class LoteTest {
         }
     }
 
+    @Test
+void testVenderIngressosValidos() {
+    int vendidos = lote.venderIngressos(TipoIngresso.NORMAL, 10);
+    assertEquals(10, vendidos);
+    assertEquals(60, lote.getIngressos().stream().filter(i -> i.getTipo() == TipoIngresso.NORMAL).count());
+}
+
+@Test
+void testVenderIngressosAcimaDoDisponivel() {
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        lote.venderIngressos(TipoIngresso.VIP, 25);
+    });
+    assertEquals("Não há ingressos suficientes do tipo VIP para vender", exception.getMessage());
+}
+
+@Test
+void testVenderIngressosTipoInexistente() {
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        lote.venderIngressos(null, 5);
+    });
+    assertEquals("Tipo de ingresso inválido", exception.getMessage());
+}
+
+@Test
+void testVenderIngressosQuantidadeZero() {
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        lote.venderIngressos(TipoIngresso.MEIA_ENTRADA, 0);
+    });
+    assertEquals("A quantidade solicitada deve ser maior que zero", exception.getMessage());
+}
+
+@Test
+void testVenderIngressosTodosDisponiveis() {
+    int vendidos = lote.venderIngressos(TipoIngresso.VIP, 20);
+    assertEquals(20, vendidos);
+    assertEquals(0, lote.getIngressos().stream().filter(i -> i.getTipo() == TipoIngresso.VIP).count());
+}
+
+
 }
