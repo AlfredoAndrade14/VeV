@@ -195,4 +195,31 @@ class ShowTest {
                 "Status financeiro: PREJUÍZO", relatorio.toString());
     }
 
+    @Test
+    void testGerarRelatorioEstavel() {
+        Show show = new Show("2024-10-10", "Imagine Dragons", 21000.0, 25000.0, false);
+        Lote lote1 = new Lote(1000, 0.3, 80.00, 0.25);
+
+        show.adicionarLote(lote1);
+
+        for (int i = 0; i < 500; i++) {
+            lote1.getIngressos().get(i).vender();
+        }
+
+        Relatorio relatorio = show.gerarRelatorio();
+
+        assertEquals(500, relatorio.getIngressosVipVendidos() + relatorio.getIngressosMeiaVendidos()
+                + relatorio.getIngressosNormaisVendidos());
+        assertEquals(0, relatorio.getReceitaLiquida(), 0.01);
+        assertEquals(StatusFinanceiro.ESTAVEL, relatorio.getStatusFinanceiro());
+        assertEquals("Relatório do Show\n" +
+                "Data: 2024-10-10\n" +
+                "Artista: Imagine Dragons\n" +
+                "Ingressos VIP vendidos: 300\n" +
+                "Ingressos Meia vendidos: 100\n" +
+                "Ingressos Normais vendidos: 100\n" +
+                "Receita líquida: R$ 0,00\n" +
+                "Status financeiro: ESTAVEL", relatorio.toString());
+    }
+
 }
