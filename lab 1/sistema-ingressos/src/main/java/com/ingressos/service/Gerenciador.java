@@ -24,7 +24,7 @@ public class Gerenciador {
             throw new IllegalArgumentException("O show já está registrado no sistema.");
         }
 
-        Show novoShow = new Show(artista, data, despesasInfraestrutura, cache, dataEspecial);
+        Show novoShow = new Show(data, artista, despesasInfraestrutura, cache, dataEspecial);
         this.shows.add(novoShow);
         return novoShow;
     }
