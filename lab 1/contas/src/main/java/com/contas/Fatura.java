@@ -6,7 +6,11 @@ public class Fatura {
     private String cliente;
     private Date data;
     private double valor;
-    private boolean paga;
+    private StatusFatura status;
+
+    public enum StatusFatura {
+        PAGA, PENDENTE
+    }
 
     public Fatura(String cliente, Date data, double valor) {
         if (cliente == null || cliente.trim().isEmpty()) {
@@ -22,7 +26,7 @@ public class Fatura {
         this.cliente = cliente;
         this.data = data;
         this.valor = valor;
-        this.paga = false;
+        this.status = StatusFatura.PENDENTE;
     }
 
     public String getCliente() {
@@ -38,10 +42,13 @@ public class Fatura {
     }
 
     public boolean isPaga() {
-        return paga;
+        if (this.status.equals(StatusFatura.PAGA)) {
+            return true;
+        }
+        return false;
     }
 
-    public void setPaga(boolean paga) {
-        this.paga = paga;
+    public void setPaga() {
+        this.status = StatusFatura.PAGA;
     }
 }
