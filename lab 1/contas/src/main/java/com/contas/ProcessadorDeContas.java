@@ -16,8 +16,14 @@ public class ProcessadorDeContas {
         if (contas.size() != tipos.size()) {
             throw new IllegalArgumentException("A lista de contas e a lista de tipos devem ter o mesmo tamanho.");
         }
+        Fatura faturaReferencia = contas.get(0).getFatura();
+        double somaPagamentos = 0.0;
 
         for (int i = 0; i < contas.size(); i++) {
+            if (!contas.get(i).getFatura().equals(faturaReferencia)) {
+                throw new IllegalArgumentException("Todas as contas devem pertencer à mesma fatura.");
+            }
+            
             TipoPagamento tipo;
             switch (tipos.get(i)) {
                 case "boleto":
