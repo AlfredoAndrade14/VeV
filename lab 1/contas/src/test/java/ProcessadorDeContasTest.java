@@ -144,4 +144,26 @@ public class ProcessadorDeContasTest {
         assertEquals("Pagamentos por cartão de crédito só podem ser incluídos se a data da conta for pelo menos 15 dias anteriores à data da fatura.", exception.getMessage());
     }
 
+    @Test
+    public void TestContasDeFaturasDiferentes() throws ParseException {
+        Fatura fatura1 = new Fatura("Cliente A", sdf.parse("20/02/2023"), 500.00);
+        Fatura fatura2 = new Fatura("Cliente B", sdf.parse("21/02/2023"), 500.00);
+        Conta conta1 = new Conta("001", sdf.parse("20/02/2023"), 500.00, fatura1);
+        Conta conta2 = new Conta("002", sdf.parse("21/02/2023"), 500.00, fatura2);
+
+        List<Conta> contas = new ArrayList<>();
+        contas.add(conta1);
+        contas.add(conta2);
+        
+        List<String> tipos = new ArrayList<>();
+        tipos.add("boleto");
+        tipos.add("boleto");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            processador.processar(contas, tipos);
+        });
+        
+        assertEquals("Todas as contas devem pertencer à mesma fatura.", thrown.getMessage());
+    }
 }
