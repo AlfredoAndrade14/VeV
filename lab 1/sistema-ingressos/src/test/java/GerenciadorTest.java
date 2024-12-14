@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.ingressos.enums.TipoIngresso;
 import com.ingressos.models.*;
+import com.ingressos.service.Gerenciador;
 
 class GerenciadorTest {
 
