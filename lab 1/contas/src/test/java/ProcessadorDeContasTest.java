@@ -166,4 +166,37 @@ public class ProcessadorDeContasTest {
         
         assertEquals("Todas as contas devem pertencer à mesma fatura.", thrown.getMessage());
     }
+
+    @Test
+    public void TestFaturaPaga() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 500.00);
+        Conta conta = new Conta("001", sdf.parse("20/02/2023"), 500.00, fatura);
+        List<Conta> contas = new ArrayList<>();
+        contas.add(conta);
+        
+        List<String> tipos = new ArrayList<>();
+        tipos.add("boleto");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+        processador.processar(contas, tipos);
+        assertEquals(fatura.isPaga(), true);
+    }
+
+    @Test
+    public void TestFaturaPendente() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 500.00);
+
+        Conta conta = new Conta("001", sdf.parse("19/02/2023"), 300.00, fatura);
+        
+        List<Conta> contas = new ArrayList<>();
+        contas.add(conta);
+        
+        List<String> tipos = new ArrayList<>();
+        tipos.add("boleto");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+        processador.processar(contas, tipos);
+        
+        assertEquals(fatura.isPaga(), false);
+    }
 }
