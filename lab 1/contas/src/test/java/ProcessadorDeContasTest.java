@@ -199,4 +199,50 @@ public class ProcessadorDeContasTest {
         
         assertEquals(fatura.isPaga(), false);
     }
+
+    @Test
+    public void TestExemplo1() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 1500.00);
+        Conta conta1 = new Conta("001", sdf.parse("20/02/2023"), 500.00, fatura);
+        Conta conta2 = new Conta("002", sdf.parse("20/02/2023"), 400.00, fatura);
+        Conta conta3 = new Conta("003", sdf.parse("20/02/2023"), 600.00, fatura);
+
+        List<Conta> contas = List.of(conta1, conta2, conta3);
+        List<String> tipos = List.of("boleto", "boleto", "boleto");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+        processador.processar(contas, tipos);
+
+        assertEquals(fatura.isPaga(), true);
+    }
+
+    @Test
+    public void TestExemplo2() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 1500.00);
+        Conta conta1 = new Conta("001", sdf.parse("05/02/2023"), 700.00, fatura);
+        Conta conta2 = new Conta("002", sdf.parse("17/02/2023"), 800.00, fatura);
+
+        List<Conta> contas = List.of(conta1, conta2);
+        List<String> tipos = List.of("cartão", "tranferencia");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+        processador.processar(contas, tipos);
+
+        assertEquals(fatura.isPaga(), true);
+    }
+
+    @Test
+    public void TestExemplo3() throws ParseException {
+        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 1500.00);
+        Conta conta1 = new Conta("001", sdf.parse("06/02/2023"), 700.00, fatura);
+        Conta conta2 = new Conta("002", sdf.parse("17/02/2023"), 800.00, fatura);
+
+        List<Conta> contas = List.of(conta1, conta2);
+        List<String> tipos = List.of("cartão", "tranferencia");
+
+        ProcessadorDeContas processador = new ProcessadorDeContas();
+        processador.processar(contas, tipos);
+
+        assertEquals(fatura.isPaga(), false);
+    }
 }
