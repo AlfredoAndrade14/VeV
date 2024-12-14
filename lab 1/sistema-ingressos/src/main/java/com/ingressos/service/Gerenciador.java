@@ -68,21 +68,50 @@ public class Gerenciador {
     public void venderIngressos(String artista, String data, TipoIngresso tipo, int quantidade) {
         Show show = buscarShow(artista, data);
 
-        boolean vendido = false;
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("A quantidade solicitada deve ser maior que zero");
+        }
+
+        int quantidadeRestante = quantidade;
 
         for (Lote lote : show.getLotes()) {
-            try {
-                quantidade -= lote.venderIngressos(tipo, quantidade);
-                if (quantidade <= 0) {
-                    vendido = true;
-                    break;
+            long ingressosDisponiveis = lote.getIngressos().stream()
+                    .filter(i -> i.getTipo() == tipo && !i.isVendido())
+                    .count();
+
+            if (ingressosDisponiveis > 0) {
+                if (ingressosDisponiveis >= quantidadeRestante) {
+                    for (Ingresso ingresso : lote.getIngressos()) {
+                        if (ingresso.getTipo() == tipo && !ingresso.isVendido() && quantidadeRestante > 0) {
+                            ingresso.vender();
+                            quantidadeRestante--;
+                        }
+                        if (quantidadeRestante == 0) {
+                            break;
+                        }
+                    }
+                } else {
+                    for (Ingresso ingresso : lote.getIngressos()) {
+                        if (ingresso.getTipo() == tipo && !ingresso.isVendido() && quantidadeRestante > 0) {
+                            ingresso.vender();
+                            quantidadeRestante--;
+                        }
+                        if (quantidadeRestante == 0) {
+                            break;
+                        }
+                    }
                 }
-            } catch (IllegalArgumentException e) {
+            }
+
+            if (quantidadeRestante == 0) {
+                break;
             }
         }
 
-        if (!vendido || quantidade > 0) {
-            throw new IllegalArgumentException("Não há ingressos suficientes do tipo " + tipo + " disponíveis");
+        if (quantidadeRestante > 0) {
+            throw new IllegalArgumentException("Não há ingressos suficientes do tipo " + tipo
+                    + " disponíveis para o show de " + artista + " em " + data);
         }
     }
+
 }

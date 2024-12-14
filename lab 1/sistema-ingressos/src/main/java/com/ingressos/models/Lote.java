@@ -60,7 +60,6 @@ public class Lote {
         }
 
         long ingressosDisponiveis = ingressos.stream().filter(i -> i.getTipo() == tipo).count();
-
         if (quantidade > ingressosDisponiveis) {
             throw new IllegalArgumentException("Não há ingressos suficientes do tipo " + tipo + " para vender");
         }
@@ -72,7 +71,6 @@ public class Lote {
             }
         }
         ingressos.removeAll(ingressosParaRemover);
-
         return quantidade;
     }
 
