@@ -101,7 +101,7 @@ class GerenciadorTest {
             gerenciador.venderIngressos("The Rolling Stones", "2024-12-20", TipoIngresso.VIP, 200);
         });
 
-        assertEquals("Não há ingressos suficientes do tipo VIP disponíveis", exception.getMessage());
+        assertEquals("Não há ingressos suficientes do tipo VIP disponíveis para o show de The Rolling Stones em 2024-12-20", exception.getMessage());
     }
 
     @Test
