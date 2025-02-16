@@ -28,7 +28,7 @@ public class Lote {
         this.id = contadorId++;
         this.ingressos = new ArrayList<>();
 
-        int qtdeVip = (int) (quantidade * percentualVip);
+        int qtdeVip = (int) Math.round(quantidade * percentualVip);
         int qtdeMeia = (int) (quantidade * 0.1);
         int qtdeNormal = quantidade - qtdeVip - qtdeMeia;
 
