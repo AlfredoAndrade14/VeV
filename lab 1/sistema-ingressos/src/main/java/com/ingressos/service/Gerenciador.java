@@ -24,7 +24,7 @@ public class Gerenciador {
             throw new IllegalArgumentException("O show já está registrado no sistema.");
         }
 
-        Show novoShow = new Show(data, artista, despesasInfraestrutura, cache, dataEspecial);
+        Show novoShow = new Show(data, artista, cache, despesasInfraestrutura, dataEspecial);
         this.shows.add(novoShow);
         return novoShow;
     }
@@ -67,6 +67,10 @@ public class Gerenciador {
 
     public void venderIngressos(String artista, String data, TipoIngresso tipo, int quantidade) {
         Show show = buscarShow(artista, data);
+
+        if (tipo == null) {
+            throw new IllegalArgumentException("Tipo de ingresso inválido");
+        }
 
         if (quantidade <= 0) {
             throw new IllegalArgumentException("A quantidade solicitada deve ser maior que zero");

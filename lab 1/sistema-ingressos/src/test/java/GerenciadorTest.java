@@ -25,8 +25,8 @@ class GerenciadorTest {
         Show show = gerenciador.buscarShow("Linkin Park", "2024-11-16");
         assertEquals("Linkin Park", show.getArtista());
         assertEquals("2024-11-16", show.getData());
-        assertEquals(1000.0, show.getCache());
-        assertEquals(2000.0, show.getDespesasInfraestrutura());
+        assertEquals(1000.0, show.getDespesasInfraestrutura());
+        assertEquals(2000.0, show.getCache());
         assertTrue(show.isDataEspecial());
     }
 
