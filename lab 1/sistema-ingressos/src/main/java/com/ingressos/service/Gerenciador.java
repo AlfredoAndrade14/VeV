@@ -15,7 +15,7 @@ public class Gerenciador {
 
     public Show criarShow(String artista, String data, double despesasInfraestrutura, double cache,
             boolean dataEspecial) {
-        if (artista == null || data == null || despesasInfraestrutura < 0 || cache < 0) {
+        if (artista == null || data == null || despesasInfraestrutura <= 0 || cache <= 0) {
             throw new IllegalArgumentException("Dados inválidos para criar o show");
         }
 
