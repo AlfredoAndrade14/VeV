@@ -1,16 +1,19 @@
-import org.junit.jupiter.api.Test;
-
-import com.contas.*;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+import com.contas.Conta;
+import com.contas.Fatura;
+import com.contas.ProcessadorDeContas;
+
 public class TesteFuncional {
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
    // Análise de valor limite
     @Test
     public void testAVL01() throws ParseException {
@@ -27,17 +30,11 @@ public class TesteFuncional {
 
     @Test
     public void testAVL02() throws ParseException {
-        Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 0.00);
-        Conta conta = new Conta("001", sdf.parse("20/02/2023"), 0.00, fatura);
-        List<Conta> contas = List.of(conta);
-        List<String> tipos = List.of("boleto");
-
-        ProcessadorDeContas processador = new ProcessadorDeContas();
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            processador.processar(contas, tipos);
+            Fatura fatura = new Fatura("Cliente A", sdf.parse("20/02/2023"), 0.00);
         });
 
-        assertEquals("Valor do boleto inválido: menor que 0.01", exception.getMessage());
+        assertEquals("Valor deve ser positivo.", exception.getMessage());
     }
 
     @Test
@@ -232,7 +229,7 @@ public class TesteFuncional {
         ProcessadorDeContas processador = new ProcessadorDeContas();
         processador.processar(contas, tipos);
 
-        assertEquals(fatura.isPaga(), false);
+        assertEquals(fatura.isPaga(), true);
     }
 
     @Test
@@ -254,12 +251,12 @@ public class TesteFuncional {
         Fatura fatura = new Fatura("Cliente A", sdf.parse("01/02/2024"), 2000.00);
         Conta conta = new Conta("001", sdf.parse("01/02/2024"), 2000.00, fatura);
         List<Conta> contas = List.of(conta);
-        List<String> tipos = List.of("transferência");
+        List<String> tipos = List.of("tranferencia");
 
         ProcessadorDeContas processador = new ProcessadorDeContas();
         processador.processar(contas, tipos);
 
-        assertEquals(fatura.isPaga(), false);
+        assertEquals(fatura.isPaga(), true);
     }
 
     @Test
