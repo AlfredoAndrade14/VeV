@@ -1,4 +1,4 @@
-package functionalTests;
+package funcionalTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
