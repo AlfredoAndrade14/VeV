@@ -25,8 +25,8 @@ class GerenciadorTest {
         Show show = gerenciador.buscarShow("Linkin Park", "2024-11-16");
         assertEquals("Linkin Park", show.getArtista());
         assertEquals("2024-11-16", show.getData());
-        assertEquals(1000.0, show.getCache());
-        assertEquals(2000.0, show.getDespesasInfraestrutura());
+        assertEquals(1000.0, show.getDespesasInfraestrutura());
+        assertEquals(2000.0, show.getCache());
         assertTrue(show.isDataEspecial());
     }
 
@@ -101,7 +101,7 @@ class GerenciadorTest {
             gerenciador.venderIngressos("The Rolling Stones", "2024-12-20", TipoIngresso.VIP, 200);
         });
 
-        assertEquals("Não há ingressos suficientes do tipo VIP disponíveis", exception.getMessage());
+        assertEquals("Não há ingressos suficientes do tipo VIP disponíveis para o show de The Rolling Stones em 2024-12-20", exception.getMessage());
     }
 
     @Test
