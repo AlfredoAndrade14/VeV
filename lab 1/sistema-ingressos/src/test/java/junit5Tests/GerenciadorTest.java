@@ -1,3 +1,4 @@
+package junit5Tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
