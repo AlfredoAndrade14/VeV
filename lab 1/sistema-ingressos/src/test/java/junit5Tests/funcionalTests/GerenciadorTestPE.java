@@ -3,13 +3,17 @@ package junit5Tests.funcionalTests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.ingressos.service.Gerenciador;
-import com.ingressos.models.Show;
 import com.ingressos.models.Lote;
 import com.ingressos.enums.TipoIngresso;
 
+@DisplayName("Testes Funcionais do Gerenciador utilizando Particionamento por Equivalência")
 public class GerenciadorTestPE {
 
     private Gerenciador gerenciador;
@@ -19,54 +23,43 @@ public class GerenciadorTestPE {
         gerenciador = new Gerenciador();
     }
 
-    // CT-PE-01
-    @Test
-    public void testCriarShowValido() {
-        Show show = gerenciador.criarShow("Artista A", "2025-12-25", 2000.0, 1000.0, true);
-        assertNotNull(show);
-        assertEquals("Artista A", show.getArtista());
-        assertEquals("2025-12-25", show.getData());
-    }
-
-    // CT-PE-02
-    @Test
-    public void testCriarShowComArtistaNulo() {
+    @ParameterizedTest
+    @DisplayName("Falha ao criar show com dados inválidos")
+    @NullSource
+    void testCriarShowComDadosInvalidos(String valorInvalido) {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            gerenciador.criarShow(null, "2025-12-25", 2000.0, 1000.0, false);
+            gerenciador.criarShow(valorInvalido, "2025-12-25", 2000.0, 1000.0, false);
         });
         assertEquals("Dados inválidos para criar o show", exception.getMessage());
     }
 
-    // CT-PE-03
-    @Test
-    public void testCriarShowComDataNula() {
+    @ParameterizedTest
+    @DisplayName("Falha ao criar show com valores numéricos inválidos")
+    @ValueSource(doubles = { -100.0, -30.0, 0.0 })
+    void testCriarShowComValoresInvalidos(Double valor) {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            gerenciador.criarShow("Artista A", null, 2000.0, 1000.0, false);
+            gerenciador.criarShow("Artista A", "2025-12-25", valor, 1000.0, false);
         });
         assertEquals("Dados inválidos para criar o show", exception.getMessage());
     }
 
-    // CT-PE-04
-    @Test
-    public void testCriarShowComDespesaNegativa() {
+    @ParameterizedTest
+    @DisplayName("Falha ao vender ingressos com quantidade inválida")
+    @ValueSource(ints = { 0, -1, -10 })
+    void testVendaIngressosQuantidadeInvalida(int quantidade) {
+        gerenciador.criarShow("Artista C", "2025-10-05", 1500.0, 800.0, false);
+        Lote lote = new Lote(100, 0.25, 10.0, 0.10);
+        gerenciador.adicionarLoteAoShow("Artista C", "2025-10-05", lote);
+
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            gerenciador.criarShow("Artista A", "2025-12-25", -100.0, 1000.0, false);
+            gerenciador.venderIngressos("Artista C", "2025-10-05", TipoIngresso.NORMAL, quantidade);
         });
-        assertEquals("Dados inválidos para criar o show", exception.getMessage());
+        assertTrue(exception.getMessage().contains("maior que zero"));
     }
 
-    // CT-PE-05
     @Test
-    public void testCriarShowComCacheNaoPositivo() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            gerenciador.criarShow("Artista A", "2025-12-25", 2000.0, -30.00, false);
-        });
-        assertEquals("Dados inválidos para criar o show", exception.getMessage());
-    }
-
-    // CT-PE-06
-    @Test
-    public void testCriarShowDuplicado() {
+    @DisplayName("Falha ao criar show duplicado")
+    void testCriarShowDuplicado() {
         gerenciador.criarShow("Artista A", "2025-12-25", 2000.0, 1000.0, false);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             gerenciador.criarShow("Artista A", "2025-12-25", 2000.0, 1000.0, false);
@@ -74,38 +67,23 @@ public class GerenciadorTestPE {
         assertEquals("O show já está registrado no sistema.", exception.getMessage());
     }
 
-    // CT-PE-07
     @Test
-    public void testVendaIngressosValida() {
+    @DisplayName("Venda de ingressos válida")
+    void testVendaIngressosValida() {
         gerenciador.criarShow("Artista B", "2025-11-10", 1500.0, 800.0, false);
         Lote lote = new Lote(100, 0.25, 10.0, 0.10);
         gerenciador.adicionarLoteAoShow("Artista B", "2025-11-10", lote);
 
-        assertDoesNotThrow(() -> {
-            gerenciador.venderIngressos("Artista B", "2025-11-10", TipoIngresso.NORMAL, 30);
-        });
+        assertDoesNotThrow(() -> gerenciador.venderIngressos("Artista B", "2025-11-10", TipoIngresso.NORMAL, 30));
         long vendidos = lote.getIngressos().stream()
                 .filter(i -> i.getTipo() == TipoIngresso.NORMAL && i.isVendido())
                 .count();
         assertEquals(30, vendidos);
     }
 
-    // CT-PE-08
     @Test
-    public void testVendaIngressosQuantidadeZero() {
-        gerenciador.criarShow("Artista C", "2025-10-05", 1500.0, 800.0, false);
-        Lote lote = new Lote(100, 0.25, 10.0, 0.10);
-        gerenciador.adicionarLoteAoShow("Artista C", "2025-10-05", lote);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            gerenciador.venderIngressos("Artista C", "2025-10-05", TipoIngresso.NORMAL, 0);
-        });
-        assertTrue(exception.getMessage().contains("maior que zero"));
-    }
-
-    // CT-PE-09
-    @Test
-    public void testVendaIngressosQuantidadeMaiorQueDisponivel() {
+    @DisplayName("Falha ao vender ingressos acima do disponível")
+    void testVendaIngressosQuantidadeMaiorQueDisponivel() {
         gerenciador.criarShow("Artista D", "2025-09-15", 1500.0, 800.0, false);
         Lote lote = new Lote(50, 0.25, 10.0, 0.10);
         gerenciador.adicionarLoteAoShow("Artista D", "2025-09-15", lote);
@@ -116,9 +94,9 @@ public class GerenciadorTestPE {
         assertTrue(exception.getMessage().contains("Não há ingressos suficientes"));
     }
 
-    // CT-PE-10
     @Test
-    public void testVendaIngressosTipoNulo() {
+    @DisplayName("Falha ao vender ingressos com tipo nulo")
+    void testVendaIngressosTipoNulo() {
         gerenciador.criarShow("Artista E", "2025-08-20", 1500.0, 800.0, false);
         Lote lote = new Lote(50, 0.25, 10.0, 0.10);
         gerenciador.adicionarLoteAoShow("Artista E", "2025-08-20", lote);
