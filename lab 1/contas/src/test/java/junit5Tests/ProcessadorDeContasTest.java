@@ -1,3 +1,5 @@
+package junit5Tests;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -54,7 +56,12 @@ public class ProcessadorDeContasTest {
             Fatura fatura = new Fatura("Cliente A", dataFatura, 500.00);
             Conta conta = new Conta("001", sdf.parse("21/02/2023"), 500.00, fatura);
 
-            processador.processar(List.of(conta), List.of("boleto"));
+            List<Conta> contas = new ArrayList<>();
+            contas.add(conta);
+            List<String> tipos = new ArrayList<>();
+            tipos.add("boleto");
+
+            processador.processar(contas, tipos);
 
             assertEquals(1, processador.getPagamentos().size(), "Deve ter um pagamento processado");
             assertEquals(550.00, processador.getPagamentos().get(0).getConta().getValorPago(), 0.01, 
