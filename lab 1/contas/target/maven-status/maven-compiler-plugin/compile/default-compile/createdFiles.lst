@@ -1,0 +1,7 @@
+com/contas/Main.class
+com/contas/ProcessadorDeContas.class
+com/contas/Conta.class
+com/contas/Pagamento.class
+com/contas/Fatura$StatusFatura.class
+com/contas/Pagamento$TipoPagamento.class
+com/contas/Fatura.class

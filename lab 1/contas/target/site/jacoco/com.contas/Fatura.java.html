@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Fatura.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">contas</a> &gt; <a href="index.source.html" class="el_package">com.contas</a> &gt; <span class="el_source">Fatura.java</span></div><h1>Fatura.java</h1><pre class="source lang-java linenums">package com.contas;
+
+import java.util.Date;
+
+public class Fatura {
+    private String cliente;
+    private Date data;
+    private double valor;
+    private StatusFatura status;
+
+<span class="fc" id="L11">    public enum StatusFatura {</span>
+<span class="fc" id="L12">        PAGA, PENDENTE</span>
+    }
+
+<span class="fc" id="L15">    public Fatura(String cliente, Date data, double valor) {</span>
+<span class="fc bfc" id="L16" title="All 4 branches covered.">        if (cliente == null || cliente.trim().isEmpty()) {</span>
+<span class="fc" id="L17">            throw new IllegalArgumentException(&quot;Cliente não pode ser nulo ou vazio.&quot;);</span>
+        }
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        if (data == null) {</span>
+<span class="fc" id="L20">            throw new IllegalArgumentException(&quot;Data não pode ser nula.&quot;);</span>
+        }
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (valor &lt;= 0) {</span>
+<span class="fc" id="L23">            throw new IllegalArgumentException(&quot;Valor deve ser positivo.&quot;);</span>
+        }
+        
+<span class="fc" id="L26">        this.cliente = cliente;</span>
+<span class="fc" id="L27">        this.data = data;</span>
+<span class="fc" id="L28">        this.valor = valor;</span>
+<span class="fc" id="L29">        this.status = StatusFatura.PENDENTE;</span>
+<span class="fc" id="L30">    }</span>
+
+    public String getCliente() {
+<span class="fc" id="L33">        return cliente;</span>
+    }
+
+    public Date getData() {
+<span class="fc" id="L37">        return data;</span>
+    }
+
+    public double getValor() {
+<span class="fc" id="L41">        return valor;</span>
+    }
+
+    public boolean isPaga() {
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (this.status.equals(StatusFatura.PAGA)) {</span>
+<span class="fc" id="L46">            return true;</span>
+        }
+<span class="fc" id="L48">        return false;</span>
+    }
+
+    public void setPaga() {
+<span class="fc" id="L52">        this.status = StatusFatura.PAGA;</span>
+<span class="fc" id="L53">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

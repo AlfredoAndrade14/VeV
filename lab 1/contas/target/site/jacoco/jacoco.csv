@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+contas,com.contas,Fatura.StatusFatura,0,24,0,0,0,2,0,1,0,1
+contas,com.contas,Fatura,0,64,0,10,0,20,0,11,0,6
+contas,com.contas,Pagamento.TipoPagamento,0,34,0,0,0,2,0,1,0,1
+contas,com.contas,Pagamento,6,62,5,9,1,16,5,8,0,6
+contas,com.contas,ProcessadorDeContas,0,204,0,24,0,42,0,16,0,3
+contas,com.contas,Conta,0,61,0,10,0,18,0,10,0,5
+contas,com.contas,Main,7,0,0,0,3,0,2,0,2,0

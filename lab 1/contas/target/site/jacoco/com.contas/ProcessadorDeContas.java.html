@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProcessadorDeContas.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">contas</a> &gt; <a href="index.source.html" class="el_package">com.contas</a> &gt; <span class="el_source">ProcessadorDeContas.java</span></div><h1>ProcessadorDeContas.java</h1><pre class="source lang-java linenums">package com.contas;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.contas.Pagamento.TipoPagamento;
+
+public class ProcessadorDeContas {
+    private List&lt;Pagamento&gt; pagamentos;
+
+<span class="fc" id="L11">    public ProcessadorDeContas() {</span>
+<span class="fc" id="L12">        this.pagamentos = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L13">    }</span>
+
+    public void processar(List&lt;Conta&gt; contas, List&lt;String&gt; tipos) {
+<span class="fc bfc" id="L16" title="All 2 branches covered.">        if (contas.size() != tipos.size()) {</span>
+<span class="fc" id="L17">            throw new IllegalArgumentException(&quot;A lista de contas e a lista de tipos devem ter o mesmo tamanho.&quot;);</span>
+        }
+
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        if (contas.size() == 0) {</span>
+<span class="fc" id="L21">            throw new IllegalArgumentException(&quot;A lista de contas e a lista de tipos não podem ser vazias&quot;);</span>
+        }
+
+<span class="fc" id="L24">        Fatura faturaReferencia = contas.get(0).getFatura();</span>
+<span class="fc" id="L25">        double somaPagamentos = 0.0;</span>
+<span class="fc" id="L26">        boolean adicionarPagamento = true;</span>
+
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        for (int i = 0; i &lt; contas.size(); i++) {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">            if (!contas.get(i).getFatura().equals(faturaReferencia)) {</span>
+<span class="fc" id="L30">                throw new IllegalArgumentException(&quot;Todas as contas devem pertencer à mesma fatura.&quot;);</span>
+            }
+            
+            TipoPagamento tipo;
+<span class="fc bfc" id="L34" title="All 4 branches covered.">            switch (tipos.get(i)) {</span>
+                case &quot;boleto&quot;:
+<span class="fc" id="L36">                    tipo = Pagamento.TipoPagamento.BOLETO;</span>
+<span class="fc bfc" id="L37" title="All 4 branches covered.">                    if (contas.get(i).getValorPago() &lt; 0.01 || contas.get(i).getValorPago() &gt; 5000.00) {</span>
+<span class="fc" id="L38">                        adicionarPagamento = false;</span>
+<span class="fc" id="L39">                        break;</span>
+                    }
+        
+<span class="fc bfc" id="L42" title="All 2 branches covered.">                    if (contas.get(i).getData().after(contas.get(i).getFatura().getData())) {</span>
+<span class="fc" id="L43">                        double valorAcrescido = contas.get(i).getValorPago() * 1.10;</span>
+<span class="fc" id="L44">                        Conta contaAtualizada = new Conta(</span>
+<span class="fc" id="L45">                            contas.get(i).getCodigo(),</span>
+<span class="fc" id="L46">                            contas.get(i).getData(),</span>
+<span class="fc" id="L47">                            valorAcrescido,</span>
+<span class="fc" id="L48">                            contas.get(i).getFatura()</span>
+                        );
+                    
+<span class="fc" id="L51">                        contas.set(i, contaAtualizada);</span>
+                    }
+<span class="fc" id="L53">                    break; </span>
+                case &quot;cartão&quot;:
+<span class="fc" id="L55">                    long diasDeDiferenca = (contas.get(i).getFatura().getData().getTime() - contas.get(i).getData().getTime()) / (1000 * 60 * 60 * 24);</span>
+<span class="fc" id="L56">                    tipo = Pagamento.TipoPagamento.CARTAO_CREDITO;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">                    if (diasDeDiferenca &lt; 15) {</span>
+<span class="fc" id="L58">                        adicionarPagamento = false;</span>
+<span class="fc" id="L59">                        break;</span>
+                    }
+                    break;
+                case &quot;tranferencia&quot;:
+<span class="fc" id="L63">                    tipo = Pagamento.TipoPagamento.TRANSFERENCIA_BANCARIA;</span>
+<span class="fc" id="L64">                    break;</span>
+                default:
+<span class="fc" id="L66">                    throw new IllegalArgumentException(&quot;Tipo de pagamento inválido: &quot; + tipos.get(i));</span>
+            }
+
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            if (adicionarPagamento) {</span>
+<span class="fc" id="L70">                pagamentos.add(new Pagamento(tipo, contas.get(i)));</span>
+<span class="fc" id="L71">                somaPagamentos += contas.get(i).getValorPago();</span>
+            }
+        }
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (somaPagamentos &gt;= faturaReferencia.getValor()) {</span>
+<span class="fc" id="L75">            faturaReferencia.setPaga();</span>
+        }
+<span class="fc" id="L77">    }</span>
+
+    public List&lt;Pagamento&gt; getPagamentos() {
+<span class="fc" id="L80">        return pagamentos;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
